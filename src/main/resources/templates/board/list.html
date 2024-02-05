@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+
+	<th:block th:fragment="content">
+
+
+
+		<h1>
+			Board List Page <span> <a th:href="@{/board/register}"> <!-- 링크, #에 주소를 넣음 @{} 타임리프 표현식 -->
+
+					<button type="button" class="btn btn-outline-primary">게시물등록</button>
+			</a>
+			</span>
+		</h1>
+
+		<table class="table table-striped">
+			<!-- 부트스트랩의 스타일 적용 -->
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>등록일</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="dto : ${list}">
+
+					<th><a
+						th:href="@{/board/read(no = ${dto.no}, page= ${list.number + 1})}">[[${dto.no}]]</a>
+						<!-- page 변수를 받아서 저장하고 있는다. -->
+					</th>
+
+					<td>[[${dto.title}]]</td>
+					<td>[[${dto.writer}]]</td>
+
+					<!-- value -->
+					<!-- 패턴 -->
+					<td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
+					<!-- 실제 데이터에는 영향이 없고 출력만 한다 -->
+				</tr>
+
+			</tbody>
+
+		</table>
+
+
+		<ul class="pagination h-100 justify-content-center align-items-center">
+			<!-- 페에지 버튼 설정 -->
+			<th:block th:each="page : ${#numbers.sequence(1, list.totalPages)}">
+				<!-- 변수: 리스트(리스트 반환하는 함수) -->
+
+				<th:block th:if="${list.number+1 == page}">
+					<li class="page-item active"><a
+						th:href="@{/board/list(page=${page})}" class="page-link">[[${page}]]</a></li>
+				</th:block>
+
+				<th:block th:unless="${list.number+1 == page}">
+					<li class="page-item"><a
+						th:href="@{/board/list(page=${page})}" class="page-link">[[${page}]]</a></li>
+				</th:block>
+
+			</th:block>
+
+		</ul>
+
+
+		<!-- 전달받은 페이지 정보로 번호 목록 만들기 -->
+
+
+		<script th:inline="javascript">
+			
+			$(document).ready(function(){
+				
+				var msg = [[${msg}]];
+				
+				if(msg != null){
+					alert(msg + "번 글이 등록되었습니다.")
+				}
+				});
+			
+	
+					
+				
+			
+		</script>
+
+	</th:block>
+
+</th:block>
+
+
+<!--인라인 속성을 사용하여 타입 처리-->
+<!--전달받은 값을 모달창으로 출력-->
+<!--서버에서 전달한 처리결과를 msg변수에 저장-->
+<!-- 글번호가 있는지 확인 -->
+<!--<script th:inline="javascript">
+			$(document).ready(function(){
+			  var msg = [[${msg}]];
+			  if(msg != null){
+				  alert(msg + "번 글이 등록되었습니다.");
+			  }
+			});
+</script>-->
