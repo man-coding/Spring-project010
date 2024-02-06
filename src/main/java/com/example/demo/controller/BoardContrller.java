@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,8 +21,6 @@ public class BoardContrller {
 
 	@Autowired
 	BoardService service;
-
-
 
 	// 목록화면
 	@GetMapping("/list")
@@ -47,7 +47,11 @@ public class BoardContrller {
 
 	// 등록처리
 	@PostMapping("/register") // 화면에서 전달받은 게시물 전달자 객체
-	public String registerPost(BoardDTO dto, RedirectAttributes redirectAttributes) {
+	public String registerPost(BoardDTO dto, RedirectAttributes redirectAttributes, Principal principal) {
+
+		String id = principal.getName();
+
+		dto.setWriter(id);
 
 		// 게시물 등록하고 새로운 게시물 번호 반환
 		int no = service.register(dto);

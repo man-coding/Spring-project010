@@ -6,13 +6,21 @@
 <!-- 문서 안에 있는 조각을 basic 페이지에 전달한다 -->
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
 
-    <th:block th:fragment="content"> <!-- 조각만들기 -->
+	<th:block th:fragment="content">
+		<!-- 조각만들기 -->
 
-        <h1>Main Page</h1>
+		<!-- 인증시 사용된 객체에 대한 정보 -->
+		<b>Authenticated DTO:</b>
+		<div sec:authentication="principal"></div>
+		
+		<!-- 인증시 사용된 객체의 아이디 -->
+		<b>Authenticated username:</b>
+		<div sec:authentication="name"></div>
+		
+		<!-- 객체의 권한 -->
+		<b>Authenticated user role:</b>
+		<div sec:authentication="principal.authorities"></div>
 
-    </th:block>
+	</th:block>
 
 </th:block>
-
-
-
